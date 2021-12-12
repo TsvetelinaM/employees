@@ -9,8 +9,13 @@ import {getDataByParam, getDays, getMaxValueIndex} from './../shared/homeService
 const ChangeView = styled.button`
     text-align:center;
     display:block;
-    margin:20px;
+    margin:35px 20px 20px 20px;
     padding: 10px;
+    border-color: #001833;
+    background-color: #001833;
+    color:white;
+    border-radius: 5px;
+    font-weight:bold;
 `
 const FileInput = styled.input`
     margin:20px;

@@ -9,7 +9,7 @@ const Styles = styled.div`
 
   table {
     border-spacing: 0;
-    border: 1px solid black;
+    border: 1px solid #3B3B3B;
 
     tr {
       :last-child {
@@ -23,12 +23,20 @@ const Styles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
+      border-bottom: 1px solid #3B3B3B;
+      border-right: 1px solid #3B3B3B;
+      font-weight: bold;
+      color:#3B3B3B;
 
       :last-child {
         border-right: 0;
       }
+    }
+
+    th {
+        border-color: #001833;
+        background-color: #001833;
+        color:white;
     }
   }
 `

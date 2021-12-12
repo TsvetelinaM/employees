@@ -6,6 +6,7 @@ const TableHolder = styled.div`
     display:flex;
     width:80%;
     margin:20px;
+    padding-top:1rem;
     box-sizing:border-box;
     flex-direction:column;
     color:#3B3B3B;
@@ -15,10 +16,23 @@ const TableCell = styled.div`
     text-align:center;
     border:1px solid #3B3B3B;
     padding: 10px 0;
+    font-weight:bold;
     ${props => props.header && css`
-        font-weight:bold;
         font-size:16px;
+        border-color: #001833;
+        background-color: #001833;
+        color:white;
     `}
+    :first-child {
+        ${props => props.header && css`
+        border-top-left-radius: 5px;
+    `}
+    }
+    :last-child {
+        ${props => props.header && css`
+        border-top-right-radius: 5px;
+    `}
+    }
 `
 const TableRow = styled.div`
     display:flex;
