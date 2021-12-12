@@ -22,13 +22,23 @@ const FileInput = styled.input`
     display:block;
 `
 
+const ErrorMsg = styled.p`
+    color:#900C3F;
+    font-weight:bold;
+    font-size:18px;
+    margin:20px;
+    display:block;
+`
+
 const Home = () => {
   const [values, setValues] = useState([])
   const [dataByProject, setDataByProject] = useState([])
   const [showFlex, setShowFlex] = useState(true)
   const [dateFormat, setDateFormat] = useState('yyyy-MM-dd')
+  const [showError, setShowError] = useState('')
 
   const showFile = async (e) => {
+    if(e.target.files.length>0) {
         e.preventDefault()
         const reader = new FileReader()
         reader.onloadend = async (e) => { 
@@ -50,6 +60,32 @@ const Home = () => {
         setValues(mappedValues)
         }
         reader.readAsText(e.target.files[0])
+     }
+    }
+
+    const filterProjectsByCouple = (valuesInObject, coupleToFind) => {
+        const coupleData = []
+         
+        for (const project in valuesInObject) {
+          const foundInProject = valuesInObject[project].find(item => item.firstEmpId === coupleToFind.firstEmpId && item.secondEmpId === coupleToFind.secondEmpId)
+          if(foundInProject)
+          coupleData.push(foundInProject)
+        }
+  
+        return coupleData
+      }
+  
+    const selectDateFormat = (formatToTransform) => {
+        return setDateFormat(formatToTransform)
+    }
+
+    const showFormatError = (dateCheck) => {
+        if (dateCheck === null) {
+            console.log('Given wrong date format')
+            setShowError('Not valid date format')
+        } else {
+            setShowError('')
+        }
     }
 
     const calculateTimeSlots =  useCallback(() => {
@@ -67,6 +103,7 @@ const Home = () => {
                 array.forEach((userB, indexB) => {
                     if (indexA < indexB) { 
                         tempDays =  getDays(userA.dateFrom, userB.dateFrom, userA.dateTo, userB.dateTo, dateFormat) 
+                        showFormatError(tempDays)
                         
                         couplesByProject[project].push({
                             projectId:project,
@@ -102,30 +139,18 @@ const Home = () => {
         setDataByProject(valuesToShow)
     }, [values, dateFormat])
 
-    const filterProjectsByCouple = (valuesInObject, coupleToFind) => {
-      const coupleData = []
-       
-      for (const project in valuesInObject) {
-        const foundInProject = valuesInObject[project].find(item => item.firstEmpId === coupleToFind.firstEmpId && item.secondEmpId === coupleToFind.secondEmpId)
-        if(foundInProject)
-        coupleData.push(foundInProject)
-      }
-
-      return coupleData
-    }
 
     useEffect(() => {
         calculateTimeSlots()
     }, [calculateTimeSlots])
     
-    const selectDateFormat = (formatToTransform) => {
-        return setDateFormat(formatToTransform)
-    }
+
 
     return (
      <>  
         <DropDown selectDateFormat = {selectDateFormat}/>
         <FileInput type='file' onChange={(e) => showFile(e)} />
+        {showError.length>0 && <ErrorMsg>{showError}</ErrorMsg>}
         {(dataByProject && dataByProject.length>0) &&  <div>
         <ChangeView showFlex onClick={() => setShowFlex(!showFlex)}>{showFlex ? 'Show DataGrid' : 'Show Simple Flex'}</ChangeView>
         {showFlex &&  <FlexTable values ={dataByProject}/>}

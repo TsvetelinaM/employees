@@ -29,8 +29,11 @@ export const getDays = (startAStr, startBStr, endAStr, endBStr, dateFormat) => {
     const startB = convertToDate(startBStr, dateFormat)
     const endA = convertToDate(endAStr, dateFormat)
     const endB = convertToDate(endBStr, dateFormat)
-
     
+   
+    if (isNaN(startA.getTime()) || isNaN(startB.getTime()) || isNaN(endA.getTime()) || isNaN(endB.getTime())) { 
+        return null
+    }
     if ((startA<=endB) && (endA>=startB))
     { 
         const startDate = new Date(Math.max(startA,startB))
