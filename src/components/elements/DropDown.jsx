@@ -12,7 +12,6 @@ const Holder = styled.div`
 `
 const InfoLink = styled.a`
     display:block;
-    margin:10px 0px;
     font-size:10px;
 `
 
